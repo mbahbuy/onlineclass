@@ -20,15 +20,16 @@ class BimbelController extends Controller
         ]);
     }
 
-    public function json()
+    public function json() : mixed
     {
-        //
+        $bimbels = Bimbel::all();
+        return response()->json($bimbels);
     }
 
-    public function store(Request $request)
+    public function store(Request $request) : mixed
     {
         $rules = [
-            'name' => 'required|string|unique:bimbels,name',
+            'name' => 'required|string|unique:bimbels,title',
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
             'day_start' => 'required|integer|between:0,6',
@@ -70,10 +71,10 @@ class BimbelController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, Bimbel $bimbel)
+    public function update(Request $request, Bimbel $bimbel) : mixed
     {
         $rules = [
-            'name' => 'required|string|unique:your_table,name,' . $bimbel->id,
+            'name' => 'required|string|unique:bimbels,title,' . $bimbel->id,
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
             'day_start' => 'required|integer|between:0,6',
@@ -115,10 +116,7 @@ class BimbelController extends Controller
         ], 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Bimbel $bimbel)
+    public function destroy(Bimbel $bimbel) : mixed
     {
         if ($bimbel->delete()) {
             return response()->json(['bg' => 'bg-success', 'message' => 'Kelas berhasil dihapus']);
