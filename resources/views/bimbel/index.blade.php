@@ -432,6 +432,13 @@
           $(this).attr('data-search', value);
           generateData(1, value);
         });
+
+        $('#pagination-data').on('click', 'a.page-link', function () {
+            let clickedButton = $(this);
+            let search = $('#cari-nama').attr('data-search');
+            let page = clickedButton.attr('data-page');
+            generateData(page, search);
+        });
     });
 
     function toggleHide()

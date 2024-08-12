@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('bimbel_id');
-            $table->date('awal');
-            $table->date('akhir');
             $table->timestamps();
         });
     }

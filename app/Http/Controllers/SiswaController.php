@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Siswa, User};
+use App\Models\{Siswa};
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ class SiswaController extends Controller
         return response()->json($siswa);
     }
 
-    public function approve(Siswa $siswa)
+    public function approve(Siswa $siswa): mixed
     {
         $siswa->status = 1;
         $siswa->save();
@@ -34,7 +34,7 @@ class SiswaController extends Controller
         return response()->json(['bg' => 'bg-success', 'message' => 'Siswa diterima']);
     }
 
-    public function block(Siswa $siswa)
+    public function block(Siswa $siswa): mixed
     {
         $siswa->status = 2;
         $siswa->save();

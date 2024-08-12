@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +53,10 @@ class User extends Authenticatable
     public function siswa() : HasOne
     {
         return $this->hasOne(Siswa::class, 'user_id', 'id');
+    }
+
+    public function buying() : HasMany
+    {
+        return $this->hasMany(Buying::class, 'user_id', 'id');
     }
 }

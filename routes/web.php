@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{BimbelController, DashboardController,  ProfileController, SiswaController, UserController};
+use App\Http\Controllers\{BimbelController, BuyingController, DashboardController,  ProfileController, SiswaController, UserController};
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
+Route::post('/daftarsiswa', [DashboardController::class, 'daftarsiswa'])->middleware('auth')->name('daftarsiswa');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,7 +37,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/siswa/json', [SiswaController::class, 'json'])->name('siswa.json');
     Route::put('/siswa/{siswa}/approve', [SiswaController::class, 'approve'])->name('siswa.approve');
     Route::put('/siswa/{siswa}/block', [SiswaController::class, 'block'])->name('siswa.block');
-    
+
+    // Pembelian Kelas
+    Route::get('/pembelian', [BuyingController::class, 'list'])->name('pembelian');
+});
+
+Route::middleware(['auth', 'siswa'])->group(function () {
+    Route::get('/kelas', [BuyingController::class, 'index'])->name('kelas');
+    Route::post('/kelas/json', [BuyingController::class, 'json'])->name('kelas.json');
+    Route::post('/kelas/store', [BuyingController::class, 'store'])->name('kelas.store');
+    Route::get('/kelas/show/{buying}/{bimbel}', [BuyingController::class, 'show'])->name('kelas.show');
 });
 
 require __DIR__.'/auth.php';

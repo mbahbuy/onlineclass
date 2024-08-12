@@ -2,64 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buying;
 use Illuminate\Http\Request;
+use App\Models\{Bimbel, Buying};
+use Illuminate\Support\Facades\{Auth, Validator};
+use Illuminate\View\View;
 
 class BuyingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('buying.index', [
+            'title' => 'Class',
+            'hal'   => 'kelas/index'
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function json(): mixed
     {
-        //
+        $user = Auth::user();
+
+        $data = Bimbel::with(['buyings' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->get();
+
+        return response()->json($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $request) : mixed
     {
-        //
+        $rules = ['bimbel_id' => 'required|numeric|exists:bimbels,id'];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'bg' => 'bg-danger',
+                'message' => $validator->errors()->first()
+            ], 400);
+        }
+
+        $buying = new Buying();
+        $buying->bimbel_id = $request->bimbel_id;
+        $buying->user_id = Auth::user()->id;
+        $buying->save();
+
+        return response()->json([
+            'bg' => 'bg-success',
+            'message' => "Kelas telah dibeli."
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Buying $buying)
+    public function show(Buying $buying, Bimbel $bimbel) : View
     {
-        //
+        return view('buying.show', [
+            'title'     => "kelas $bimbel->title",
+            'hal'       => 'kelas/show',
+            'buyings'   => $buying,
+            'bimbel'    => $bimbel
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Buying $buying)
+    public function list() : View
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Buying $buying)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Buying $buying)
-    {
-        //
+        $data = Buying::with(['user', 'bimbel'])->get();
+        return view('buying.list', [
+            'title'     => 'History Pembelian',
+            'hal'       => 'pembelian/list',
+            'data'      => $data
+        ]);
     }
 }

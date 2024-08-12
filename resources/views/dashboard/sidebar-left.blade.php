@@ -23,7 +23,7 @@
             </a>
           </li>
 
-          @if('admin')
+          @if(Auth::user()->is_admin)
             <li class="nav-item">
               <a href="<?= $hal == 'class/index' ? 'javascript:void(0)' : route('class') ?>" class="nav-link <?= $hal == 'class/index' ? 'active' : '' ?>">
                 <i class="nav-icon fas fa-chalkboard"></i>
@@ -51,7 +51,26 @@
               </a>
             </li>
 
+            <li class="nav-item">
+              <a href="<?= $hal == 'pembelian/list' ? 'javascript:void(0)' : route('pembelian') ?>" class="nav-link <?= $hal == 'pembelian/list' ? 'active' : '' ?>">
+                <i class="nav-icon fas fa-history"></i>
+                <p>
+                  Histori Pembelian
+                </p>
+              </a>
+            </li>
 
+          @endif
+
+          @if (Auth::user()->is_siswa)
+          <li class="nav-item">
+            <a href="<?= $hal == 'kelas/index' ? 'javascript:void(0)' : route('kelas') ?>" class="nav-link <?= $hal == 'kelas/index' ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-chalkboard"></i>
+              <p>
+                Kelas
+              </p>
+            </a>
+          </li>
           @endif
 
         </ul>
