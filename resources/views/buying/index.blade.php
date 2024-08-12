@@ -132,6 +132,8 @@
         fetchData(function (e) {            
             processData(e);
             generateData();
+            console.log(dataJson);
+            
         });
 
         $('#table-data').on('click', 'button.button-buy, button.button-enter', function (){
@@ -244,7 +246,7 @@
                 return {
                     id: buying.id,
                     userId: buying.user_id,
-                    courseId: buying.course_id,
+                    courseId: buying.bimbel_id,
                 };
             });
 
@@ -319,7 +321,7 @@
                   <td class="align-middle text-center">
                     ${data[i].buyings.length !== 0 ? `
                         ${isWithinSchedule(data[i].dayStart, data[i].dayEnd, data[i].timeStart, data[i].timeEnd) ? `
-                            <button type="button" class="btn btn-outline-success button-enter" title="enter" data-name="${data[i].nama}" data-description="${data[i].description}" data-harga="${data[i].harga}" data-day-start="${data[i].dayStart}" data-day-end="${data[i].dayEnd}" data-time-start="${data[i].timeStart}" data-time-end="${data[i].timeEnd}" data-id="${data[i].id}" data-buying-id="${data[i].buying.id}">
+                            <button type="button" class="btn btn-outline-success button-enter" title="enter" data-name="${data[i].nama}" data-description="${data[i].description}" data-harga="${data[i].harga}" data-day-start="${data[i].dayStart}" data-day-end="${data[i].dayEnd}" data-time-start="${data[i].timeStart}" data-time-end="${data[i].timeEnd}" data-id="${data[i].id}" data-buying-id="${data[i].buyings[0].id}">
                                 <i class="fas fa-chalkboard-teacher"></i>
                             </button>
                         ` : `
